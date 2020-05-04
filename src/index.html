@@ -1,0 +1,18 @@
+<html>
+  <body>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+    <div id="app">
+      <div>
+        Chips: {{ chips }}
+      </div>
+
+      <div v-if="actions.wager">
+        <button @click="wager">Bet</button>
+        <input v-model.number="wageredAmount" type="number"/>
+      </div>
+    </div>
+
+    <script src="./index.js"></script>
+  </body>
+</html>
