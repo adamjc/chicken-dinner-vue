@@ -17,6 +17,6 @@
     "chicken-dinero": "github:adamjc/chicken-dinero"
   },
   "alias": {
-    "vue": "../node_modules/vue/dist/vue.common.js"
+    "vue": "./node_modules/vue/dist/vue.common.js"
   }
 }
