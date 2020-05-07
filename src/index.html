@@ -3,16 +3,39 @@
     <meta charset="utf-8"/>
   </head>
   <body>
-    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
-
     <div id="app">
       <div>
         Chips: {{ chips }}
       </div>
 
+      <!-- Available Actions -->
       <div v-if="actions.wager">
         <button @click="wager">Bet</button>
-        <input v-model.number="wageredAmount" type="number"/>
+        <input v-model.number="wageredAmount" type="number" />
+      </div>
+
+      <div v-if="actions.hit">
+        <button @click="hit">Hit</button>
+      </div>
+
+      <div v-if="actions.stand">
+        <button @click="stand">Stand</button>
+      </div>
+
+      <!-- The Dealer's Hand -->
+      <div v-if="dealerHand.length" id="dealer-hand">
+        <div>Dealer's Hand</div>
+        <div v-for="card in dealerHand">
+          {{card}}
+        </div>
+      </div>
+
+      <!-- The Player's Hand -->
+      <div v-if="hand.length" id="player-hand">
+        <div>Your Hand</div>
+        <div v-for="card in hand">
+          {{card}}
+        </div>
       </div>
     </div>
 
