@@ -16,16 +16,10 @@ jobs:
           node-version: '12.x'
       - run: npm i
       - run: npx parcel build src/index.html
-      - name: Set dir up to only contain github-pages stuff
-        run: |-
-          rm -rf node_modules package-lock.json package.json src
-          mv dist/* .
-          rmdir dist
-      - name: Commit dist/ to github-pages branch
-        run: |-
-          git checkout github-pages
-          git config --global user.email "github-pages-bot@bleep-bloop.com"
-          git config --global user.email "github-pages-bot"
-          git add .
-          git commit -m "Update website"
-          git push
+      - name: Deploy
+        uses: s0/git-publish-subdir-action@master
+        env:
+          REPO: self
+          BRANCH: github-pages
+          FOLDER: public/site
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
