@@ -15,7 +15,7 @@ jobs:
         with:
           node-version: '12.x'
       - run: npm i
-      - run: npx parcel build src/index.html
+      - run: npx parcel build src/index.html --public-url ./
       - name: Deploy
         uses: s0/git-publish-subdir-action@master
         env:
