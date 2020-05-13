@@ -1,0 +1,29 @@
+body {
+  font-family: 'DM Mono', monospace;
+  box-sizing: border-box;
+  font-size: 2em;
+  margin: 0;
+  padding: 0.5em;
+}
+
+#app {
+  display: flex;
+}
+
+.board {
+  .player {
+    padding-top: 1em;
+  }
+
+  .text {
+    text-align: right;
+    color: #AAA;
+  }
+}
+
+.details {
+  border-left: 1px solid rgba(0, 0, 0, 0.2);
+  margin-left: 0.7em;
+  padding-left: 0.3em;
+}
+

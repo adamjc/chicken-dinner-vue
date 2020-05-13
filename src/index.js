@@ -1,51 +1,65 @@
 const Vue = require('vue')
 const { Engine: blackjack, STATES } = require('chicken-dinero')
 
-let game = new blackjack()
+let game = blackjack()
 
 let id = setInterval(() => {
-  console.log('doin a step')
   game.step()
+  Object.assign(app, getState())
+}, 100)
 
-  app.actions = game.getActions()
-  app.dealerHand = game.getDealerHand()
-  app.hand = game.getPlayer().hand
-}, 2000)
+function getState () {
+  const player = game.getPlayer()
+
+  return {
+    chips: player.chips,
+    wageredAmount: player.wageredAmount,
+    actions: game.getActions(),
+    hand: player.hand,
+    dealerHand: game.getDealerHand(),
+    state: game.getState()
+  }
+}
 
 let app = new Vue({
   el: '#app',
   data: {
     chips: game.getPlayer().chips,
-    wageredAmount: 10,
+    wagerAmount: 10,
+    wageredAmount: game.getPlayer().wageredAmount,
     actions: game.getActions(),
     dealerHand: game.getDealerHand(),
-    hand: game.getPlayer().hand
+    hand: game.getPlayer().hand,
+    state: game.getState(),
+    total: game.total,
+    STATES
   },
   methods: {
     wager: function () {
-      this.actions.wager(this.wageredAmount)
-      game.stepUntilChange() // Deal Player
-      game.stepUntilChange() // Deal Dealer
+      if (game.getState() === STATES.DONE) {
+        game.clearBoard()
 
-      this.actions = game.getActions()
-      this.dealerHand = game.getDealerHand()
-      this.hand = game.getPlayer().hand
+        Object.assign(this, getState())
+      }
+
+      console.log('wagering', this.wagerAmount) // DEBUG
+      this.actions.wager(this.wagerAmount)
+      game.stepUntilChange() // DEBUG - Deal Player
+      game.stepUntilChange() // DEBUG - Deal Dealer
+
+      Object.assign(this, getState())
     },
     hit: function () {
       this.actions.hit()
-      game.stepUntilChange()
+      game.stepUntilChange() // DEBUG - Potentially end game
 
-      this.actions = game.getActions()
-      this.dealerHand = game.getDealerHand()
-      this.hand = game.getPlayer().hand
+      Object.assign(this, getState())
     },
     stand: function () {
       this.actions.stand()
-      game.stepUntilChange()
+      game.stepUntilChange() // DEBUG - End game (dealer's turn until game finish)
 
-      this.actions = game.getActions()
-      this.dealerHand = game.getDealerHand()
-      this.hand = game.getPlayer().hand
+      Object.assign(this, getState())
     }
   }
 })

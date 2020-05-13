@@ -1,40 +1,53 @@
 <html>
   <head>
     <meta charset="utf-8"/>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Mono&display=swap" rel="stylesheet"> 
+    <link rel="stylesheet" href="./styles.scss">
   </head>
   <body>
     <div id="app">
-      <div>
-        Chips: {{ chips }}
-      </div>
+      <div class="board">
+        <div class="board__dealer dealer">
+          <div class="dealer__text text">
+            Dealer's Hand <span class="dealer__total total" v-if="dealerHand.length">{{total(dealerHand, false)}}</span>
+          </div>
+          <div class="dealer__hand hand" v-if="dealerHand.length" id="dealer-hand">
+            <span class="hand__card card" v-for="card in dealerHand">
+              {{card}}
+            </span>
+          </div>
+        </div>
 
-      <!-- Available Actions -->
-      <div v-if="actions.wager">
-        <button @click="wager">Bet</button>
-        <input v-model.number="wageredAmount" type="number" />
-      </div>
-
-      <div v-if="actions.hit">
-        <button @click="hit">Hit</button>
-      </div>
-
-      <div v-if="actions.stand">
-        <button @click="stand">Stand</button>
-      </div>
-
-      <!-- The Dealer's Hand -->
-      <div v-if="dealerHand.length" id="dealer-hand">
-        <div>Dealer's Hand</div>
-        <div v-for="card in dealerHand">
-          {{card}}
+        <div class="board__player player">
+          <div class="player__text text">
+            Your Hand <span class="player__total total" v-if="hand.length">{{total(hand)}}</span>
+          </div>
+          <div class="player__hand hand" v-if="hand.length" id="player-hand">
+            <span class="hand__card card" v-for="card in hand">
+              {{card}}
+            </span>
+          </div>
         </div>
       </div>
 
-      <!-- The Player's Hand -->
-      <div v-if="hand.length" id="player-hand">
-        <div>Your Hand</div>
-        <div v-for="card in hand">
-          {{card}}
+      <div class="details">
+        <div class="details__chips">
+          Chips: {{ chips }}
+        </div>
+
+        <div class="actions">
+          <div v-if="actions.wager || state === STATES.DONE">
+            <button @click="wager">Bet</button>
+            <input v-model.number="wagerAmount" type="number" />
+          </div>
+  
+          <div v-if="actions.hit">
+            <button @click="hit">Hit</button>
+          </div>
+  
+          <div v-if="actions.stand">
+            <button @click="stand">Stand</button>
+          </div>
         </div>
       </div>
     </div>
